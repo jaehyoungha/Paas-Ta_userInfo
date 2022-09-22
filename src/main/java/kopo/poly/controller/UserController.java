@@ -7,9 +7,7 @@ import kopo.poly.service.IUserInfoService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -93,19 +91,25 @@ public class UserController {
 
         return "/user/login";
     }
-    @PostMapping(value = "login")
+    @RequestMapping (value = "login",method = {RequestMethod.POST,RequestMethod.GET}
+)
     public String login(HttpSession session,UserDTO uDTO, Model model)throws Exception{
         log.info(this.getClass().getName()+"login Start!");
 
         int res = 0;
+        String msg = "";
+        String url = "";
 
         try{
             res = userInfoService.login(uDTO);
             if (res ==1) {
                 session.setAttribute("user_Id", uDTO.getUserId());
                 log.info("user_Id :" + session);
+                msg = "로그인되었습니다.";
+                url = "/user/main";
             } else {
-                return "/user/login";
+                msg = "아이디가 없거나 비밀번호를 잘못 입력하셨습니다.";
+                url = "/user/login";
             }
         }catch (Exception e) {
             res = 2;
@@ -114,9 +118,10 @@ public class UserController {
         } finally {
             log.info(this.getClass().getName()+ " login end!");
             model.addAttribute("res",String.valueOf(res));
+            model.addAttribute("url",url);
         }
 
-        return "/notice/main";
+        return "/user/alert";
         }
 
 

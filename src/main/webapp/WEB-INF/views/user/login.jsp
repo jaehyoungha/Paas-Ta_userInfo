@@ -9,26 +9,28 @@
 <html>
 <head>
     <title>Login</title>
+    <script src="/js/jquery-3.6.0.min.js"></script>
     <script type="text/javascript">
-        function doLoginUserCheck(f) {
-            if (f.user_Id.value === "") {
-                alert("아이디를 입력하세요");
-                f.user_Id.focus();
+        function doLoginUserCheck() {
+            if ($("#userId").val().trim() === "") {
+                alert("아이디를 입력하세요.");
                 return false;
             }
-            if (f.user_Pwd.value === "") {
-                alert("비밀번호를 입력하세요");
-                f.user_Pwd.focus();
+            if ($("#userPwd").val().trim() === "") {
+                alert("이름을 입력하세요.");
                 return false;
             }
+            document.getElementById("userLogin").submit();
         }
     </script>
 </head>
 <body>
-<form name="f" method="post" action="/login" onsubmit="return doLoginUserCheck(this);">
-    아이디 : <input type="text" name="userId">
-    비밀번호 : <input type="password" name ="userPwd">
-    <input type="submit" value="로그인">
+<form id="userLogin" method="post" action="/login">
+    아이디 : <input type="text" id="userId" name="userId">
+    <br>
+    비밀번호 : <input type="password" id="userPwd" name ="userPwd">
+    <input type="submit" value="로그인" onclick="doLoginUserCheck()">
+    <button type="button" onclick="document.location.href='/signUpPage'">회원가입</button>
 </form>
 </body>
 </html>

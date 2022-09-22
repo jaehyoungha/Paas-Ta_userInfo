@@ -19,7 +19,7 @@ public class MailService implements IMailService {
 
     final String user ="hjk8893@gmail.com";
 
-    final String password ="advrkbqimhdkckgv";
+    final String password ="mvjbsmljwnwqjxef";
 
     @Override
     public int doSendmail(MailDTO mDTO) throws Exception {

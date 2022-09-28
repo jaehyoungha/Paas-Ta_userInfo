@@ -1,9 +1,22 @@
+<%@ page import="kopo.poly.util.CmmUtil" %>
+<%@ page import="kopo.poly.dto.UserDTO" %>
+<%@ page import="java.lang.reflect.Member" %>
 <%@ page contentType="text/html; charset=UTF-8" language="java" %>
+<%
+    String userId = (String) session.getAttribute("userId");
+    String userEmail = (String) request.getAttribute("userEmail");
+    UserDTO uDTO = (UserDTO) request.getAttribute("uDTO");
+    if (uDTO == null) {
+        uDTO = new UserDTO();
+    }
+
+%>
 <!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8">
     <title>회원정보 수정</title>
+    <script src="/js/jquery-3.6.0.min.js"></script>
     <script type="text/javascript">
     function pwdConfirm() {
     /* 비밀번호, 비밀번호 확인 입력창에 입력된 값을 비교해서 같다면 비밀번호 일치, 그렇지 않으면 불일치 라는 텍스트 출력.*/
@@ -27,16 +40,25 @@
 </head>
 <body>
     <h2>회원정보 수정</h2>
-    <form action="doUpdate" method="post">
-        <div>비밀번호</div>
+    <form action="/user/doUpdate" method="post">
+        <label>아이디</label>
+        <div><input type="text" id="user_Id" placeholder="<%=CmmUtil.nvl(uDTO.getUserId())%>" name="userId" readonly></div>
+        <label>비밀번호</label>
         <div><input type="password" id="user_Pwd" name="userPwd"></div>
-        <div>비밀번호 확인</div>
+        <label>비밀번호 확인</label>
         <div><input type="password" id="check_Pwd" name="check_Pwd" onkeyup="pwdConfirm()"></div>
         <div id="check_Pwd1"></div>
-        <div>이름</div>
-        <div><input name="name"></div>
-        <div>이메일</div>
-        <div><input type="email" id="user_Email" name="user_Email"></div>
-        <div><input type="submit" value="업데이트"></div></form>
+        <label>이름</label>
+        <div><input value="<%=CmmUtil.nvl(uDTO.getUserName())%>" name="userName"></div>
+        <label>이메일</label>
+        <div><input type="email" id="user_Email" value="<%=CmmUtil.nvl(uDTO.getUserEmail())%>" name="userEmail"></div>
+        <label>전화번호</label>
+        <div><input type="tel" id="phoneNumber" value="<%=CmmUtil.nvl(uDTO.getPhoneNumber())%>" name="phoneNumber"></div>
+        <label>우편번호</label>
+        <div><input type="text" value="<%=CmmUtil.nvl(uDTO.getAddr1())%>" id="addr1" name="addr1" readonly placeholder="우편번호"></div>
+        <label>상세주소</label>
+        <div><input type="text" value="<%=CmmUtil.nvl(uDTO.getAddr2())%>" name="addr2"></div>
+        <div><input type="submit" value="업데이트"></div>
+    </form>
 </body>
 </html>

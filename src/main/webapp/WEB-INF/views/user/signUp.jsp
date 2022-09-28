@@ -167,7 +167,7 @@
 <h2>회원가입하기</h2>
 <hr/>
 <br/>
-<form id="userSignup" method="post" action="/signUp">
+<form id="userSignup" method="post" action="/user/signUp">
 
     <label>아이디 : </label>
     <input type="text" id="userId" name="userId">
@@ -207,7 +207,7 @@
 
 
     <label>상세주소 : </label>
-    <input type="addr2" id="addr2" name="addr2">
+    <input type="text" id="addr2" name="addr2">
     <div id ="addr2_check"></div>
 
     <button type="button" onclick="Checkfield()">완료</button>

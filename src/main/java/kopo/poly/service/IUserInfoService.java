@@ -8,4 +8,8 @@ public interface IUserInfoService {
     int insertUserInfo(UserDTO uDTO) throws Exception;
 
     int login(UserDTO uDTO)throws Exception;
+
+    UserDTO getUserInfo(String userId) throws Exception;
+
+    int updateUserInfo(UserDTO uDTO) throws Exception;
 }

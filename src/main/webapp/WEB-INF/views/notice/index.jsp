@@ -2,7 +2,7 @@
 <%@ page import="kopo.poly.util.CmmUtil" %>
 <%@ page import="kopo.poly.dto.UserDTO" %>
 <%
-    String id =(String)session.getAttribute("user_Id");
+    String id =(String)session.getAttribute("userId");
     UserDTO uDTO = (UserDTO) request.getAttribute("uDTO");
 
     if (uDTO == null) {
@@ -25,10 +25,10 @@
 <body>
 <%if (id != null) { %>
 <%=id%>님 환영합니다.
-<a href="/updatePage">회원정보 수정</a>
+<a href="/user/updatePage">회원정보 수정</a>
 <a href="logout" onclick="confirmLogout();">로그아웃</a>
 <%} else {%>
-<a href="/loginPage">로그인하기</a>
+<a href="/user/loginPage">로그인하기</a>
 <%}%>
 
 </body>

@@ -7,11 +7,14 @@ import org.springframework.stereotype.Repository;
 import java.util.Optional;
 
 @Repository
-public interface UserRepository extends JpaRepository<UserEntity ,Long> {
+public interface UserRepository extends JpaRepository<UserEntity ,String> {
 
     //회원 존재여부
     //ID가 존재하는지 체크할 때 활용
-    Optional<UserEntity> findByUserId(String userId);
+    UserEntity findByUserId(String userId);
 
     Optional<UserEntity> findByUserIdAndUserPwd(String userId, String userPwd);
+
+
+
 }

@@ -25,12 +25,12 @@
     </script>
 </head>
 <body>
-<form id="userLogin" method="post" action="/login">
+<form id="userLogin" method="post" action="/user/login">
     아이디 : <input type="text" id="userId" name="userId">
     <br>
     비밀번호 : <input type="password" id="userPwd" name ="userPwd">
     <input type="submit" value="로그인" onclick="doLoginUserCheck()">
-    <button type="button" onclick="document.location.href='/signUpPage'">회원가입</button>
+    <button type="button" onclick="document.location.href='/user/signUpPage'">회원가입</button>
 </form>
 </body>
 </html>

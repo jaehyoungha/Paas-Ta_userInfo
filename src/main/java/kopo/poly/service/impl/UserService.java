@@ -90,7 +90,7 @@ public class UserService implements IUserInfoService {
     public int updateUserInfo(UserDTO uDTO) throws Exception {
         log.info(this.getClass().getName()+ ".updateUserInfo start!!");
         int res =0;
-        UserEntity uEntity = UserEntity.builder().userName(uDTO.getUserName())
+        UserEntity uEntity = UserEntity.builder().userId(uDTO.getUserId()).userName(uDTO.getUserName())
                 .userEmail(uDTO.getUserEmail()).userPwd(uDTO.getUserPwd())
                 .addr1(uDTO.getAddr1()).addr2(uDTO.getAddr2()).phoneNumber(uDTO.getPhoneNumber()).build();
 

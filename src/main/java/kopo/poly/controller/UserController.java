@@ -48,12 +48,12 @@ public class UserController {
             alt_title = "회원가입";
             msg = "회원가입되었습니다.";
             alt_state = "success";
-            url = "loginPage";
+            url = "user/loginPage";
         } else {
             alt_title = "회원가입";
             msg = "회원가입에 실패했습니다.";
             alt_state = "fail";
-            url = "signUpPage";
+            url = "user/signUpPage";
         }
         model.addAttribute("alt_title", alt_title);
         model.addAttribute("alt_state", alt_state);
@@ -64,6 +64,14 @@ public class UserController {
         log.info(this.getClass().getName() + "signUp End!!");
         return "/sweetalert";
     }
+    @GetMapping(value = "loginPage") //로그인 페이지
+    public String loginPage() {
+        log.info(this.getClass().getName() + "loginPage Start!!");
+        log.info(this.getClass().getName() + "loginPage End!!");
+
+        return "/user/login";
+    }
+
     @PostMapping(value = "login")
     public String login(HttpSession session, UserDTO uDTO, Model model, HttpServletResponse response) throws Exception {
         log.info(this.getClass().getName() + "login Start!");
@@ -98,7 +106,20 @@ public class UserController {
 
         return "/sweetalert";
     }
+    @GetMapping(value = "updatePage") //회원정보 수정 페이지
+    public String updatePage(HttpSession session,Model model) throws Exception {
+        log.info(this.getClass().getName() + "updatePage Start!!");
+        String userId = (String) session.getAttribute("userId");
 
+        UserDTO uDTO = userInfoService.getUserInfo(userId);
+
+
+        uDTO.setUserEmail(EncryptUtil.decAES128CBC(uDTO.getUserEmail()));
+        log.info("잘 가져왔니? : " + uDTO.getUserId());
+        model.addAttribute("uDTO",uDTO);
+        log.info(this.getClass().getName() + "updatePage End!!");
+        return "/user/update";
+    }
     @PostMapping(value = "doUpdate")
     public String doUpdate(UserDTO uDTO, HttpSession session, Model model) throws Exception {
         log.info(this.getClass().getName() + "doUpdate Start!!");
@@ -109,12 +130,12 @@ public class UserController {
             msg = "수정되었습니다.";
             alt_title = "수정";
             alt_state = "success";
-            url = "/user/main";
+            url = "user/main";
         } else {
             msg = "수정에 실패했습니다.";
             alt_title = "수정";
             alt_state = "fail";
-            url = "/user/updatePage";
+            url = "user/updatePage";
         }
         log.info(this.getClass().getName() + " doUpdate end!");
         model.addAttribute("alt_title", alt_title);
@@ -122,13 +143,6 @@ public class UserController {
         model.addAttribute("msg", msg);
         model.addAttribute("url", url);
         return "/sweetalert";
-    }
-    @GetMapping(value = "loginPage") //로그인 페이지
-    public String loginPage() {
-        log.info(this.getClass().getName() + "loginPage Start!!");
-        log.info(this.getClass().getName() + "loginPage End!!");
-
-        return "/user/login";
     }
     @GetMapping(value = "main")
     public String mainPage() {
@@ -146,19 +160,5 @@ public class UserController {
 
         log.info(this.getClass().getName() + ".logout End!!");
         return "/user/login";
-    }
-    @GetMapping(value = "updatePage") //회원정보 수정 페이지
-    public String updatePage(HttpSession session,Model model) throws Exception {
-        log.info(this.getClass().getName() + "updatePage Start!!");
-        String userId = (String) session.getAttribute("userId");
-
-        UserDTO uDTO = userInfoService.getUserInfo(userId);
-
-
-        uDTO.setUserEmail(EncryptUtil.decAES128CBC(uDTO.getUserEmail()));
-        log.info("잘 가져왔니? : " + uDTO.getUserId());
-        model.addAttribute("uDTO",uDTO);
-        log.info(this.getClass().getName() + "updatePage End!!");
-        return "/user/update";
     }
 }

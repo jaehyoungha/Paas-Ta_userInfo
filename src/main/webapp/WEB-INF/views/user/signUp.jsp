@@ -27,7 +27,7 @@
         }
         function doSendmail() {
             $.ajax({
-                url: "/sendmail",
+                url: "/user/sendmail",
                 type: "post",
                 data: $("#userEmail"),
                 /*dataType이란 내가 반환받을 데이터의 형태를 명시해주는 것*/

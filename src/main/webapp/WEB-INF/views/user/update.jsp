@@ -42,7 +42,7 @@
     <h2>회원정보 수정</h2>
     <form action="/user/doUpdate" method="post">
         <label>아이디</label>
-        <div><input type="text" id="user_Id" placeholder="<%=CmmUtil.nvl(uDTO.getUserId())%>" name="userId" readonly></div>
+        <div><input type="text" id="user_Id" value="<%=CmmUtil.nvl(uDTO.getUserId())%>" name="userId" readonly></div>
         <label>비밀번호</label>
         <div><input type="password" id="user_Pwd" name="userPwd"></div>
         <label>비밀번호 확인</label>

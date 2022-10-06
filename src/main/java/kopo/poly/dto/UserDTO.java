@@ -1,10 +1,12 @@
 package kopo.poly.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Setter
+@JsonIgnoreProperties(ignoreUnknown =true)
 public class UserDTO {
 
     private String userId;
@@ -14,5 +16,7 @@ public class UserDTO {
     private String userEmail;
     private String addr1;
     private String addr2;
-
+    private String regId;
+    private String regDt;
+    private String chgDt;
 }

@@ -7,6 +7,7 @@ import kopo.poly.repository.UserRepository;
 import kopo.poly.repository.entity.UserEntity;
 import kopo.poly.service.IUserInfoService;
 import kopo.poly.util.CmmUtil;
+import kopo.poly.util.DateUtil;
 import kopo.poly.util.EncryptUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -41,6 +42,8 @@ public class UserService implements IUserInfoService {
             UserEntity sEntity = UserEntity.builder()
                     .userId(uDTO.getUserId()).userName(uDTO.getUserName()).userPwd(uDTO.getUserPwd()).userEmail(uDTO.getUserEmail())
                     .phoneNumber(uDTO.getPhoneNumber()).addr1(uDTO.getAddr1()).addr2(uDTO.getAddr2())
+                    .reg_id(uDTO.getUserId()).reg_dt(DateUtil.getDateTime("yyyy-MM-dd hh:mm:ss"))
+                    .chg_dt(DateUtil.getDateTime("yyyy-MM-dd hh:mm:ss"))
                     .build();
 
 
@@ -58,7 +61,7 @@ public class UserService implements IUserInfoService {
     }
     @Transactional
     @Override
-    public int login(UserDTO uDTO) throws Exception {
+    public int login(UserDTO uDTO) throws Exception { //로그인
         log.info(this.getClass().getName() + "login start!!");
         int res = 0;
         String userPwd = CmmUtil.nvl(uDTO.getUserPwd());
@@ -73,7 +76,7 @@ public class UserService implements IUserInfoService {
     }
     @Transactional
     @Override
-    public UserDTO getUserInfo(String userId) throws Exception {
+    public UserDTO getUserInfo(String userId) throws Exception { //
         log.info(this.getClass().getName() + ".getUserInfo start!!");
         UserEntity uEntity = userRepository.findByUserId(userId);
         UserDTO uDTO = new UserDTO();
@@ -90,13 +93,18 @@ public class UserService implements IUserInfoService {
     public int updateUserInfo(UserDTO uDTO) throws Exception {
         log.info(this.getClass().getName()+ ".updateUserInfo start!!");
         int res =0;
+        uDTO.setUserPwd(EncryptUtil.encHashSHA256(uDTO.getUserPwd()));
+        uDTO.setUserEmail(EncryptUtil.encAES128CBC(uDTO.getUserEmail()));
         UserEntity uEntity = UserEntity.builder().userId(uDTO.getUserId()).userName(uDTO.getUserName())
                 .userEmail(uDTO.getUserEmail()).userPwd(uDTO.getUserPwd())
-                .addr1(uDTO.getAddr1()).addr2(uDTO.getAddr2()).phoneNumber(uDTO.getPhoneNumber()).build();
+                .addr1(uDTO.getAddr1()).addr2(uDTO.getAddr2()).phoneNumber(uDTO.getPhoneNumber())
+                .chg_dt(DateUtil.getDateTime("yyyy-MM-dd hh:mm:ss"))
+                .build();
 
         UserEntity userEntity = userRepository.save(uEntity);
         if (userEntity.getUserId().equals(uDTO.getUserId())) {
             res = 1;
+
         }
         log.info(this.getClass().getName()+ ".updateUserInfo end");
         return res;

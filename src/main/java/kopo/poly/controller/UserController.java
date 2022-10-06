@@ -89,7 +89,7 @@ public class UserController {
                 msg = "아이디가 없거나 비밀번호를 잘못 입력하셨습니다.";
                 alt_title = "로그인";
                 alt_state = "fail";
-                url = "user/login";
+                url = "user/loginPage";
             }
         } catch (Exception e) {
             res = 2;

@@ -20,8 +20,6 @@ import javax.persistence.Table;
 public class UserEntity {
 
     @Id
-//    @GeneratedValue(generator = "system-uuid")
-//    @GenericGenerator(name = "system-uuid", strategy = "uuid")
     @Column(name = "USER_ID")
     private String userId;
 
@@ -47,4 +45,13 @@ public class UserEntity {
 
     @Column(name = "ADDR2")
     private String addr2;
+
+    @Column(name = "REG_ID", updatable = false)
+    private String reg_id;
+
+    @Column(name = "REG_DT", updatable = false)
+    private String reg_dt;
+
+    @Column(name = "CHG_dt")
+    private String chg_dt;
 }

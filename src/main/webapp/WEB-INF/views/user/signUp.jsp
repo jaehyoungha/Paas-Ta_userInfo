@@ -173,9 +173,6 @@
     <input type="text" id="userId" name="userId">
     <div id ="id_check"></div>
 
-    <label>이름 : </label>
-    <input type="text" id="userName" name="userName">
-    <div id ="name_check"></div>
 
     <label>비밀번호 : </label>
     <input type="password" id="userPwd" name="userPwd">
@@ -184,6 +181,10 @@
     <label>비밀번호 확인 : </label>
     <input type="password" id="userPwd2" name="userPwd2" onkeyup="pwdConfirm()">
     <div id ="pwd2_check"></div>
+
+    <label>이름 : </label>
+    <input type="text" id="userName" name="userName">
+    <div id ="name_check"></div>
 
     <label>이메일 : </label>
     <input type="email" id="userEmail" name="userEmail">

@@ -17,6 +17,7 @@
     <meta charset="utf-8">
     <title>회원정보 수정</title>
     <script src="/js/jquery-3.6.0.min.js"></script>
+    <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
     <script type="text/javascript">
     function pwdConfirm() {
     /* 비밀번호, 비밀번호 확인 입력창에 입력된 값을 비교해서 같다면 비밀번호 일치, 그렇지 않으면 불일치 라는 텍스트 출력.*/
@@ -36,6 +37,36 @@
     msg.innerHTML ="비밀번호 불일치";
     }
     }
+    function doSendmail() {
+        $.ajax({
+            url: "/user/sendmail",
+            type: "post",
+            data: $("#userEmail"),
+            /*dataType이란 내가 반환받을 데이터의 형태를 명시해주는 것*/
+            dataType: 'json',
+            success(pMap) {
+                let data = pMap["res"];
+                randomPin = pMap["ramdomPin"];
+                if (data == 1) {
+                    $("#sendmail_result").text("메일발송이 완료되었습니다.");
+                    $("#sendmail_result").css("color", "blue");
+                } else {
+                    $("#sendmail_result").text("이메일을 다시 입력해주세요");
+                    $("#sendmail_result").css("color", "red");
+
+                }
+            }
+        });
+    }
+    function kakaoPost(f) { // 주소 우편번호 찾기
+        new daum.Postcode({
+            oncomplete: function (data) {
+                let address = data.address;f
+                let zonecode = data.zonecode;
+                f.addr1.value = "(" + zonecode + ")" +address
+            }
+        }).open();
+    }
     </script>
 </head>
 <body>
@@ -51,11 +82,13 @@
         <label>이름</label>
         <div><input value="<%=CmmUtil.nvl(uDTO.getUserName())%>" name="userName"></div>
         <label>이메일</label>
-        <div><input type="email" id="user_Email" value="<%=CmmUtil.nvl(uDTO.getUserEmail())%>" name="userEmail"></div>
+        <div><input type="email" id="userEmail" value="<%=CmmUtil.nvl(uDTO.getUserEmail())%>" name="userEmail">
+            <button type="button" onclick="doSendmail();" style="display:inline-block">인증번호 발송</button></div>
         <label>전화번호</label>
         <div><input type="tel" id="phoneNumber" value="<%=CmmUtil.nvl(uDTO.getPhoneNumber())%>" name="phoneNumber"></div>
         <label>우편번호</label>
-        <div><input type="text" value="<%=CmmUtil.nvl(uDTO.getAddr1())%>" id="addr1" name="addr1" readonly placeholder="우편번호"></div>
+        <div><input type="text" value="<%=CmmUtil.nvl(uDTO.getAddr1())%>" id="addr1" name="addr1" readonly placeholder="우편번호">
+            <button type="button" style="display:inline-block" onclick="kakaoPost(this.form)">우편번호찾기</button></div>
         <label>상세주소</label>
         <div><input type="text" value="<%=CmmUtil.nvl(uDTO.getAddr2())%>" name="addr2"></div>
         <div><input type="submit" value="업데이트"></div>

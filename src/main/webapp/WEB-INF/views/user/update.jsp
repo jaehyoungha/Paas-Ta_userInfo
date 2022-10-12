@@ -48,7 +48,7 @@
                 let data = pMap["res"];
                 randomPin = pMap["ramdomPin"];
                 if (data == 1) {
-                    $("#sendmail_result").text("메일발송이 완료되었습니다.");
+                    $("#sendmail_result").text("메일발송이 완료되었습니다 .");
                     $("#sendmail_result").css("color", "blue");
                 } else {
                     $("#sendmail_result").text("이메일을 다시 입력해주세요.");

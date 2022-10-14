@@ -43,7 +43,7 @@ public class UserService implements IUserInfoService {
                     .userId(uDTO.getUserId()).userName(uDTO.getUserName()).userPwd(uDTO.getUserPwd()).userEmail(uDTO.getUserEmail())
                     .phoneNumber(uDTO.getPhoneNumber()).addr1(uDTO.getAddr1()).addr2(uDTO.getAddr2())
                     .reg_id(uDTO.getUserId()).reg_dt(DateUtil.getDateTime("yyyy-MM-dd hh:mm:ss"))
-                    .chg_dt(DateUtil.getDateTime("yyyy-MM-dd hh:mm:ss"))
+                    .chg_id(uDTO.getUserId()).chg_dt(DateUtil.getDateTime("yyyy-MM-dd hh:mm:ss"))
                     .build();
 
 
@@ -98,7 +98,7 @@ public class UserService implements IUserInfoService {
         UserEntity uEntity = UserEntity.builder().userId(uDTO.getUserId()).userName(uDTO.getUserName())
                 .userEmail(uDTO.getUserEmail()).userPwd(uDTO.getUserPwd())
                 .addr1(uDTO.getAddr1()).addr2(uDTO.getAddr2()).phoneNumber(uDTO.getPhoneNumber())
-                .chg_dt(DateUtil.getDateTime("yyyy-MM-dd hh:mm:ss"))
+                .chg_id(uDTO.getUserId()).chg_dt(DateUtil.getDateTime("yyyy-MM-dd hh:mm:ss"))
                 .build();
 
         UserEntity userEntity = userRepository.save(uEntity);

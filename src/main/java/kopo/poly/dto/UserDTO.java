@@ -18,5 +18,6 @@ public class UserDTO {
     private String addr2;
     private String regId;
     private String regDt;
+    private String chgID;
     private String chgDt;
 }

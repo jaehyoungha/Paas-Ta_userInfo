@@ -52,6 +52,9 @@ public class UserEntity {
     @Column(name = "REG_DT", updatable = false)
     private String reg_dt;
 
-    @Column(name = "CHG_dt")
+    @Column(name = "CHG_ID")
+    private String chg_id;
+
+    @Column(name = "CHG_DT")
     private String chg_dt;
 }

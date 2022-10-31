@@ -1,5 +1,6 @@
 package kopo.poly.controller;
 
+import kopo.poly.dto.MailDTO;
 import kopo.poly.dto.UserDTO;
 import kopo.poly.service.IMailService;
 import kopo.poly.service.IUserInfoService;
@@ -8,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -52,7 +54,7 @@ public class UserController {
         } else {
             alt_title = "회원가입";
             msg = "회원가입에 실패했습니다.";
-            alt_state = "fail";
+            alt_state = "error";
             url = "user/signUpPage";
         }
         model.addAttribute("alt_title", alt_title);
@@ -88,7 +90,7 @@ public class UserController {
             } else {
                 msg = "아이디가 없거나 비밀번호를 잘못 입력하셨습니다.";
                 alt_title = "로그인";
-                alt_state = "fail";
+                alt_state = "error";
                 url = "user/loginPage";
             }
         } catch (Exception e) {
@@ -105,6 +107,47 @@ public class UserController {
         }
 
         return "/sweetalert";
+    }
+    @GetMapping(value = "findPassword")
+    public String findPassword() {
+        log.info(this.getClass().getName()+ ".findPassword Start!!");
+
+        log.info(this.getClass().getName()+ ".findPassword End!!");
+        return "/user/findPassword";
+    }
+    @PostMapping(value = "passwordChg")
+    public String passwordChg (UserDTO uDTO, MailDTO mDTO, ModelMap model) throws Exception {
+        log.info(this.getClass().getName()+".passwordChg Start!!");
+
+        res = userInfoService.RandomPasswordSendMail(uDTO);
+        log.info("비밀번호 찾기 결과는 : " + res);
+        try{
+            if (res ==1) {
+                msg = "임시 비밀번호가 발급되었습니다.";
+                alt_title = "메일 발송";
+                alt_state = "success";
+                url = "user/loginPage";
+            }
+            else {
+                msg = "오류로 인해 임시비밀번호가 발급되지 않았습니다.";
+                alt_title = "메일 발송";
+                alt_state = "error";
+                url = "user/loginPage";
+            }
+        } catch (Exception e) {
+            res = 2;
+            log.info(e.toString());
+            e.printStackTrace();
+        } finally {
+            log.info(this.getClass().getName()+".passwordChg End!!");
+            model.addAttribute("alt_title", alt_title);
+            model.addAttribute("alt_state", alt_state);
+            model.addAttribute("msg", msg);
+            model.addAttribute("url", url);
+
+        }
+
+        return "sweetalert";
     }
     @GetMapping(value = "updatePage") //회원정보 수정 페이지
     public String updatePage(HttpSession session,Model model) throws Exception {
@@ -134,7 +177,7 @@ public class UserController {
         } else {
             msg = "수정에 실패했습니다.";
             alt_title = "수정";
-            alt_state = "fail";
+            alt_state = "error";
             url = "user/updatePage";
         }
         log.info(this.getClass().getName() + " doUpdate end!");
@@ -149,6 +192,13 @@ public class UserController {
         log.info(this.getClass().getName() + "mainPage start!!");
         log.info(this.getClass().getName() + "mainPage end!!");
         return "/notice/main";
+    }
+    @GetMapping(value = "/myPage")
+    public String myPage() {
+        log.info(this.getClass().getName() + "myPage start!!");
+        log.info(this.getClass().getName() + "myPage end!!");
+
+        return "/user/myPage";
     }
     @GetMapping(value = "logout") //로그아웃
     public String logout(HttpServletRequest request,HttpSession session) {

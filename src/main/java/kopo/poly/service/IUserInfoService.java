@@ -12,4 +12,8 @@ public interface IUserInfoService {
     UserDTO getUserInfo(String userId) throws Exception;
 
     int updateUserInfo(UserDTO uDTO) throws Exception;
+
+
+    int RandomPasswordSendMail(UserDTO uDTO) throws Exception;
+
 }

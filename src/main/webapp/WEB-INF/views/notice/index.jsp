@@ -25,10 +25,11 @@
 <body>
 <%if (id != null) { %>
 <%=id%>님 환영합니다.
-<a href="/user/updatePage">회원정보 수정</a>
+<a href="/user/myPage">마이페이지</a>
 <a href="logout" onclick="confirmLogout();">로그아웃</a>
 <%} else {%>
 <a href="/user/loginPage">로그인하기</a>
+<a href="/user/signUpPage">회원가입하기</a>
 <%}%>
 
 </body>

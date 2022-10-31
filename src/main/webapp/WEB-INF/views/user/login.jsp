@@ -31,6 +31,7 @@
     비밀번호 : <input type="password" id="userPwd" name ="userPwd">
     <input type="submit" value="로그인" onclick="doLoginUserCheck()">
     <button type="button" onclick="document.location.href='/user/signUpPage'">회원가입</button>
+    <button type="button" onclick="document.location.href='/user/findPassword'">비밀번호 찾기</button>
 </form>
 </body>
 </html>

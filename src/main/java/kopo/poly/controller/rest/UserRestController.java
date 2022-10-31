@@ -24,7 +24,7 @@ public class UserRestController {
     private final IUserInfoService userInfoService;
     private final IMailService mailService;
     private int res =0;
-    @PostMapping(value = "sendmail")
+    @PostMapping(value = "sendmail") // 메일 발송하기
     public Map<String, String> sendmail(HttpServletRequest request, UserDTO uDTO) throws Exception {
         log.info(this.getClass().getName() + "sendmail start!!");
         // 이메일 주소 확인
@@ -58,4 +58,15 @@ public class UserRestController {
         log.info(this.getClass().getName() + "sendmail end!!");
         return pMap;
     }
+//    @PostMapping(value = "RandomPasswordSendMail")
+//    public String RandomPasswordSendMail(HttpServletRequest request, UserDTO uDTO) throws Exception{
+//        log.info(this.getClass().getName()+".RandomPasswordSendMail Start!!");
+//
+//        log.info("email" + uDTO.getUserEmail());
+//
+//        String RandomPassword = RandomStringUtil.getRamdomPassword(8);
+//
+//
+//        log.info(this.getClass().getName()+".RandomPasswordSendMail End!!");
+//    }
 }

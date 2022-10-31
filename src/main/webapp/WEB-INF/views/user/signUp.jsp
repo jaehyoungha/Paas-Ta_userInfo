@@ -7,6 +7,28 @@
     <script src="/js/jquery-3.6.0.min.js"></script>
     <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
     <script type = "text/javascript">
+        function idCheck() { // 아이디 중복검사
+            let userId = document.getElementById("userId").value; //자바스크립트
+            console.log("userId", id);
+            let userId2 = $("#userId").val(); //제이쿼리
+            console.log("userId2", userId2);
+
+            $.ajax({
+                url: "/user/idcheck", //어디로 통신할지
+                data: $("#userId"),
+                type: "post",
+                success(data) {
+                    console.log("data", data);
+                    if (data == 1) { //1은 존재하는거니까 중복확인이니까 -> 1이면 데이터 받았다고 성공이 아니라서 컬러를 red로 준거임
+                        $("#id_result").text("중복");
+                        $("#id_result").css("color", "red");
+                    } else {
+                        $("#id_result").text("중복된 아이디가 없습니다 성공");
+                        $("#id_result").css("color", "blue");
+                    }
+                }
+            });
+        }
         function pwdConfirm() {
             /* 비밀번호, 비밀번호 확인 입력창에 입력된 값을 비교해서 같다면 비밀번호 일치, 그렇지 않으면 불일치 라는 텍스트 출력.*/
             /* document : 현재 문서를 의미함. 작성되고 있는 문서를 뜻함. */
@@ -170,8 +192,10 @@
 <form id="userSignup" method="post" action="/user/signUp">
 
     <label>아이디 : </label>
-    <input type="text" id="userId" name="userId">
+    <input type="text" id="userId" name="userId" id="userId">
     <div id ="id_check"></div>
+    <div id="id_result"></div>
+    <button type="button" style="display:inline-block" onclick="idCheck()" id="userIdCheck">아이디 중복확인</button>
 
 
     <label>비밀번호 : </label>

@@ -2,6 +2,7 @@ package kopo.poly.service.impl;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import kopo.poly.dto.MailDTO;
 import kopo.poly.dto.UserDTO;
 import kopo.poly.repository.UserRepository;
 import kopo.poly.repository.entity.UserEntity;
@@ -9,6 +10,7 @@ import kopo.poly.service.IUserInfoService;
 import kopo.poly.util.CmmUtil;
 import kopo.poly.util.DateUtil;
 import kopo.poly.util.EncryptUtil;
+import kopo.poly.util.RandomStringUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -22,6 +24,7 @@ import java.util.Optional;
 public class UserService implements IUserInfoService {
 
     private final UserRepository userRepository;
+    private final MailService mailService;
     @Transactional
     @Override
     public int insertUserInfo(UserDTO uDTO) throws Exception {
@@ -76,7 +79,7 @@ public class UserService implements IUserInfoService {
     }
     @Transactional
     @Override
-    public UserDTO getUserInfo(String userId) throws Exception { //
+    public UserDTO getUserInfo(String userId) throws Exception {
         log.info(this.getClass().getName() + ".getUserInfo start!!");
         UserEntity uEntity = userRepository.findByUserId(userId);
         UserDTO uDTO = new UserDTO();
@@ -108,6 +111,39 @@ public class UserService implements IUserInfoService {
         }
         log.info(this.getClass().getName()+ ".updateUserInfo end");
         return res;
+    }
+
+    @Override
+    public int RandomPasswordSendMail(UserDTO uDTO) throws Exception {
+        log.info(this.getClass().getName()+ ".RandomPasswordSendMail Start!!");
+
+        int res = 0;
+        int res2 = 0;
+        String userId = CmmUtil.nvl(uDTO.getUserId());
+        String userEmail = CmmUtil.nvl(EncryptUtil.encAES128CBC(uDTO.getUserEmail()));
+        String Email =CmmUtil.nvl(uDTO.getUserEmail());
+        String RandomPassword = CmmUtil.nvl(RandomStringUtil.getRamdomPassword(4));
+        String HashPassword = CmmUtil.nvl(EncryptUtil.encHashSHA256(RandomPassword));
+        UserEntity uEntity = userRepository.findByUserIdAndUserEmail(userId,userEmail);
+
+        if (uEntity != null) {
+            res = userRepository.updateUserPwd(HashPassword,userId);
+        } else {
+            uEntity = new UserEntity();
+        }
+
+        if (res ==1) {
+            MailDTO mailDTO = new MailDTO();
+
+            mailDTO.setTomail(Email);
+            mailDTO.setTitle("aga 임시 비밀번호 발급 입니다.");
+            mailDTO.setContents("임시 비밀번호 : " + RandomPassword);
+
+            res2 = mailService.doSendmail(mailDTO);
+        }
+
+        log.info(this.getClass().getName()+ ".RandomPasswordSendMail End!!");
+        return res2;
     }
 
 }

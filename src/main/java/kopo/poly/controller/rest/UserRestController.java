@@ -4,6 +4,7 @@ import kopo.poly.dto.MailDTO;
 import kopo.poly.dto.UserDTO;
 import kopo.poly.service.IMailService;
 import kopo.poly.service.IUserInfoService;
+import kopo.poly.util.CmmUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -27,8 +28,10 @@ public class UserRestController {
     @PostMapping(value = "sendmail") // 메일 발송하기
     public Map<String, String> sendmail(HttpServletRequest request, UserDTO uDTO) throws Exception {
         log.info(this.getClass().getName() + "sendmail start!!");
+
+        String email = CmmUtil.nvl(request.getParameter("userEmail"));
         // 이메일 주소 확인
-        log.info("email :" + uDTO.getUserEmail());
+        log.info("email :" + email);
 
         Random random = new Random();
         int randomPin = random.nextInt(888888) + 111111; //인증번호
@@ -38,7 +41,7 @@ public class UserRestController {
         log.info("randomPIN: " + randomPin);
 
         MailDTO mDTO = new MailDTO();
-        mDTO.setTomail(uDTO.getUserEmail());
+        mDTO.setTomail(email);
         mDTO.setTitle(title);
         mDTO.setContents(contents);
         mDTO.setRandompin(randomPin);
@@ -58,15 +61,5 @@ public class UserRestController {
         log.info(this.getClass().getName() + "sendmail end!!");
         return pMap;
     }
-//    @PostMapping(value = "RandomPasswordSendMail")
-//    public String RandomPasswordSendMail(HttpServletRequest request, UserDTO uDTO) throws Exception{
-//        log.info(this.getClass().getName()+".RandomPasswordSendMail Start!!");
-//
-//        log.info("email" + uDTO.getUserEmail());
-//
-//        String RandomPassword = RandomStringUtil.getRamdomPassword(8);
-//
-//
-//        log.info(this.getClass().getName()+".RandomPasswordSendMail End!!");
-//    }
+
 }

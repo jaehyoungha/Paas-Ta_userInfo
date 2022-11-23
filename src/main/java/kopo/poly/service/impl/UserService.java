@@ -81,13 +81,21 @@ public class UserService implements IUserInfoService {
     @Override
     public UserDTO getUserInfo(String userId) throws Exception {
         log.info(this.getClass().getName() + ".getUserInfo start!!");
-        UserEntity uEntity = userRepository.findByUserId(userId);
+
+
+
+
         UserDTO uDTO = new UserDTO();
-        log.info("userName : " +uDTO.getUserName());
+        uDTO.setUserId(userId);
+        log.info("userId : " +uDTO.getUserId());
+
+        UserEntity uEntity = userRepository.findByUserId(uDTO.getUserId());
         if (uEntity != null) {
             uDTO = new ObjectMapper().convertValue(uEntity, new TypeReference<UserDTO>() {
             });
+
         }
+
         log.info(this.getClass().getName() + ".getUserInfo end!!");
         return uDTO;
     }

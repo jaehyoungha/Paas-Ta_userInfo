@@ -18,7 +18,11 @@ public interface UserRepository extends JpaRepository<UserEntity ,String> {
     UserEntity findByUserId(String userId);
 
     UserEntity findByUserIdAndUserEmail(String userId,String userEmail);
+
     Optional<UserEntity> findByUserIdAndUserPwd(String userId, String userPwd);
+
+
+
     @Transactional
     @Modifying(clearAutomatically = true)
     @Query(value = "UPDATE USER_INFO SET USER_PWD = :userPwd WHERE USER_ID = :userId ",nativeQuery = true)

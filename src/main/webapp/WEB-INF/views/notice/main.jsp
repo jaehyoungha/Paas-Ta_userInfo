@@ -6,6 +6,6 @@
     <title>웹 페이지 제목</title>
 </head>
 <body>
-<%@include file="../notice/index.jsp"%>
+<%@include file="../index.jsp"%>
 </body>
 </html>

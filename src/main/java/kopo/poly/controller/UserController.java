@@ -43,25 +43,36 @@ public class UserController {
     public String signUp(UserDTO uDTO, Model model) throws Exception {
         log.info(this.getClass().getName() + " signUp Start!!");
 
-        res = userInfoService.insertUserInfo(uDTO);
-        log.info("회원가입 결과는 :" + res);
+        log.info("userID: " +uDTO.getUserId() );
+        log.info("userPWD : " +uDTO.getUserPwd());
+        log.info("userEmail: " +uDTO.getUserEmail() );
+        log.info("userName : " + uDTO.getUserName());
+        log.info("addr1: " +uDTO.getAddr1() );
+        log.info("addr2 : " +uDTO.getAddr2() );
+        try {res = userInfoService.insertUserInfo(uDTO);
+            log.info("회원가입 결과는 :" + res);
+            if (res == 1) {
+                alt_title = "회원가입";
+                msg = "회원가입되었습니다.";
+                alt_state = "success";
+                url = "user/loginPage";
+            } else {
+                alt_title = "회원가입";
+                msg = "회원가입에 실패했습니다.";
+                alt_state = "error";
+                url = "user/signUpPage";
+            }
+        } catch (Exception e ) {
+            res = 2;
+            log.info(e.toString());
+            e.printStackTrace();
+        } finally {
+            model.addAttribute("alt_title", alt_title);
+            model.addAttribute("alt_state", alt_state);
+            model.addAttribute("msg", msg);
+            model.addAttribute("url", url);
 
-        if (res == 1) {
-            alt_title = "회원가입";
-            msg = "회원가입되었습니다.";
-            alt_state = "success";
-            url = "user/loginPage";
-        } else {
-            alt_title = "회원가입";
-            msg = "회원가입에 실패했습니다.";
-            alt_state = "error";
-            url = "user/signUpPage";
         }
-        model.addAttribute("alt_title", alt_title);
-        model.addAttribute("alt_state", alt_state);
-        model.addAttribute("msg", msg);
-        model.addAttribute("url", url);
-
         uDTO = null;
         log.info(this.getClass().getName() + "signUp End!!");
         return "/sweetalert";
@@ -86,7 +97,7 @@ public class UserController {
                 msg = "로그인되었습니다.";
                 alt_title = "로그인";
                 alt_state = "success";
-                url = "user/main";
+                url = "index";
             } else {
                 msg = "아이디가 없거나 비밀번호를 잘못 입력하셨습니다.";
                 alt_title = "로그인";
@@ -149,7 +160,7 @@ public class UserController {
 
         return "sweetalert";
     }
-    @GetMapping(value = "updatePage") //회원정보 수정 페이지
+    @GetMapping(value = "myPage") //회원정보 수정 페이지
     public String updatePage(HttpSession session,Model model) throws Exception {
         log.info(this.getClass().getName() + "updatePage Start!!");
         String userId = (String) session.getAttribute("userId");
@@ -161,7 +172,7 @@ public class UserController {
         log.info("잘 가져왔니? : " + uDTO.getUserId());
         model.addAttribute("uDTO",uDTO);
         log.info(this.getClass().getName() + "updatePage End!!");
-        return "/user/update";
+        return "/user/myPage";
     }
     @PostMapping(value = "doUpdate")
     public String doUpdate(UserDTO uDTO, HttpSession session, Model model) throws Exception {
@@ -173,7 +184,7 @@ public class UserController {
             msg = "수정되었습니다.";
             alt_title = "수정";
             alt_state = "success";
-            url = "user/main";
+            url = "user/myPage";
         } else {
             msg = "수정에 실패했습니다.";
             alt_title = "수정";
@@ -187,19 +198,7 @@ public class UserController {
         model.addAttribute("url", url);
         return "/sweetalert";
     }
-    @GetMapping(value = "main")
-    public String mainPage() {
-        log.info(this.getClass().getName() + "mainPage start!!");
-        log.info(this.getClass().getName() + "mainPage end!!");
-        return "/notice/main";
-    }
-    @GetMapping(value = "/myPage")
-    public String myPage() {
-        log.info(this.getClass().getName() + "myPage start!!");
-        log.info(this.getClass().getName() + "myPage end!!");
 
-        return "/user/myPage";
-    }
     @GetMapping(value = "logout") //로그아웃
     public String logout(HttpServletRequest request,HttpSession session) {
 
@@ -210,5 +209,9 @@ public class UserController {
 
         log.info(this.getClass().getName() + ".logout End!!");
         return "/user/login";
+    }
+    @GetMapping(value ="/index")
+    public String index() throws Exception {
+        return "/index";
     }
 }
